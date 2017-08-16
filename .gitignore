@@ -1,0 +1,6 @@
+venv
+*.pyc
+migrations
+.vscode
+*/node_modules
+.idea
