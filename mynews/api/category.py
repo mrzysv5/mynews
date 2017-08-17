@@ -44,7 +44,7 @@ class CategorySiteAPI(MethodView):
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 20, type=int)
         sites = Site.get_category_site_list(category_id, page, per_page)
-        return jsonify([site.to_dict() for site in sites.items])
+        return jsonify([site.to_dict() for site in sites])
 
     def post(self, category_id):
         form = SiteForm()

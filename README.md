@@ -11,3 +11,20 @@
 * Flask
 * Reactjs
 * Celery
+
+## To Do List
+
+### 2017年8月18日
+
+- [ ] `/api/categories`的`GET`、`POST`、`PUT`接口
+- [ ] `/api/categories/<int:category_id>/site`的`GET`、`POST`、`PUT`和`DELETE`接口
+- [ ] `/api/news`的`GET`和`POST`接口
+- [ ] `/api/sites`的`GET`、`POST`、`PUT`和`DELETE`接口
+- [ ] `/api/sites/<int:site_id>/news`的`GET`、`POST`、`PUT`和`DELETE`接口
+
+### 2017年8月20日
+
+- [ ] 集成`Aouth2`
+- [ ] 集成`Reactjs`
+- [ ] 前端首页页面展示
+- [ ] 数据导入

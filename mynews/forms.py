@@ -80,12 +80,12 @@ class NewsForm(BaseForm):
     created_at = DateField(label="创建时间", format="%Y-%m-%d %H:%M:%s")
 
     def validate_title(self, field):
-        if News.query.filter_by(title=field.data):
+        if News.query.filter_by(title=field.data).first():
             raise StopValidation('新闻标题 %s 已经被使用了' % field.data)
         return True
 
     def validate_url(self, field):
-        if News.query.filter_by(url=field.data):
+        if News.query.filter_by(url=field.data).first():
             raise StopValidation('新闻链接 %s 已经被使用了' % field.data)
         return True
 

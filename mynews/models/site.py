@@ -25,8 +25,8 @@ class Site(Base):
 
     @classmethod
     def get_site_list(cls, page=1, per_page=20):
-        pass
+        return Site.query.paginate(page=page, per_page=per_page).items
 
     @classmethod
     def get_category_site_list(cls, category_id, page=1, per_page=20):
-        return Site.query.filter(category_id == category_id).paginate(page=page, per_page=per_page).items
+        return Site.query.filter_by(category_id = category_id).paginate(page=page, per_page=per_page).items

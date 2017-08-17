@@ -50,4 +50,5 @@ def create_app(config_object):
     init_app(app)
     register_app(app)
     print(app.url_map)
+    print(db)
     return app
