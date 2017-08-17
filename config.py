@@ -13,6 +13,7 @@ class Config(object):
 
 class DevConfig(Config):
     ENV = 'dev'
+    TESTING = False
     DEBUG = True
     FLASKY_MAIL_SUBJECT_PREFIX = 'Notice'
     FLASKY_MAIL_SENDER = 'mrzysv5@sina.com'

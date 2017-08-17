@@ -14,5 +14,10 @@ class News(Base):
     url = Column(String(255), unique=True)
 
     site_id = Column(Integer)
+    category_id = Column(Integer)
 
     created_at = Column(DateTime, nullable=False, default=datetime.now)
+
+    @classmethod
+    def get_news_list(cls, page=1, per_page=20):
+        return News.query.paginate(page, per_page).items
