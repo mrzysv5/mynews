@@ -3,8 +3,8 @@
 from flask.views import MethodView
 from flask import request, jsonify
 
-from mynews.models import Site
-from mynews.forms import SiteForm
+from mynews.models import Site, News
+from mynews.forms import SiteForm, SiteEditForm
 
 
 class Site(MethodView):
@@ -28,12 +28,22 @@ class Site(MethodView):
     def delete(self):
         pass
 
-    def put(self):
-        pass
+    def put(self, site_id):
+        form = SiteEditForm()
+        form.create_api_json()
+        form.update(site_id)
+        return jsonify({'msg': '更新成功'})
 
 
 class SiteNews(MethodView):
 
-    def get(self, category_id):
-        """/sites/site_id/news/"""
-        pass
+    def get(self, site_id, news_id):
+        """/sites/<int:site_id>/news/"""
+        if news_id:
+            news = News.query.get(news_id)
+            return jsonify(news.to_dict())
+
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 20, type=int)
+        news_list = News.get_news_list(page, per_page)
+        return jsonify([news.to_dict() for news in news_list])

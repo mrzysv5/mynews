@@ -38,6 +38,18 @@ class CategoryForm(BaseForm):
         return category
 
 
+class CategoryEditForm(BaseForm):
+    name = StringField(label='分类名称', validators=[DataRequired()])
+
+    def update(self, category_id):
+        category = Category.query.get(category_id)
+        category.name = self.name.data
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+
+
 class SiteForm(BaseForm):
     title = StringField(label='站点标题', validators=[DataRequired()])
     url = StringField(label='站点链接', validators=[DataRequired(), URL()])
@@ -63,7 +75,8 @@ class SiteForm(BaseForm):
             url=self.url.data,
             period=self.period.data * 60,
             rules=self.rules.data,
-            created_by=1
+            created_by=1,
+            category_id=self.category_id.data
         )
         try:
             db.session.add(site)
@@ -71,6 +84,29 @@ class SiteForm(BaseForm):
         except Exception as e:
             db.session.rollback()
         return site
+
+
+class SiteEditForm(BaseForm):
+    title = StringField(label='站点标题', validators=[DataRequired()])
+    url = StringField(label='站点链接', validators=[DataRequired(), URL()])
+    category_id = IntegerField(label='分类ID', validators=[])
+    period = IntegerField(
+        label="抓取周期（分钟）",
+        validators=[NumberRange(min=1, max=60, message="抓取周期需要在1到60分钟之间")])
+    rules = StringField(label="提取规则", validators=[DataRequired()])
+
+    def update(self, site_id):
+        site = Site.query.get(site_id)
+        site.title = self.title.data
+        site.url = self.url.data
+        site.category_id = self.category_id.data
+        site.period = self.period.data
+        site.rules = self.rules.data
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+
 
 
 class NewsForm(BaseForm):

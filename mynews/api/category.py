@@ -4,7 +4,7 @@ from flask.views import MethodView
 from flask import request, jsonify
 
 from mynews.models import Category, Site, News
-from mynews.forms import CategoryForm, SiteForm
+from mynews.forms import CategoryForm, SiteForm, CategoryEditForm, SiteEditForm
 from mynews.errors import APIException
 
 
@@ -13,7 +13,7 @@ class CategoryAPI(MethodView):
     def get(self, category_id):
         if category_id:
             category = Category.query.get(category_id)
-            return jsonify(category)
+            return jsonify(category.to_dict())
 
         categories = Category.query.all()
         return jsonify([category.to_dict() for category in categories])
@@ -23,11 +23,15 @@ class CategoryAPI(MethodView):
         category = form.create_category()
         return jsonify(category.to_dict()), 201
 
-    def delete(self):
-        pass
+    def delete(self, category_id):
+        category = Category.query.get(category_id)
+        if category.remove():
+            return jsonify({'msg': '删除成功'}), 204
 
-    def put(self):
-        pass
+    def put(self, category_id):
+        form = CategoryEditForm.create_api_json()
+        form.update(category_id)
+        return jsonify({'msg': '更新成功'}), 200
 
 
 class CategorySiteAPI(MethodView):
@@ -57,10 +61,16 @@ class CategorySiteAPI(MethodView):
         site = form.create_site()
         return jsonify(site.to_dict()), 201
 
+    def put(self, category_id, site_id):
+        form = SiteEditForm()
+        form.create_api_json()
+        form.update(site_id)
+        return jsonify({'msg': '更新成功'})
+
 
 
 class CategoryNews(MethodView):
 
     def get(self, category_id):
         """/categories/category_id/news/"""
-        pass
+        news = News.query
